@@ -21,7 +21,7 @@ export const Row = (props: RowProps) => {
       {line.map((cell, j) => (
         <Cell
           key={j}
-          selected={selected?.i === i && selected.j === j}
+          selected={selected.i === i && selected.j === j}
           cell={cell}
           status={getStatus(correct, current, cell, i, j)}
           onSelect={() => onSelect(i, j)}

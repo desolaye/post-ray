@@ -11,9 +11,9 @@ export const Cell = (props: CellProps) => {
   const { cell, status, selected, onSelect } = props
 
   const classes = classNames({
-    'bg-green-300': status === 'correct',
-    'bg-yellow-300': status === 'nearby',
-    'bg-gray-300': status === 'wrong',
+    'bg-green-300': !selected && status === 'correct',
+    'bg-yellow-300': !selected && status === 'nearby',
+    'bg-gray-300': !selected && status === 'wrong',
     'opacity-0': status === 'empty',
     'bg-blue-300': selected,
   })
