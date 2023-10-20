@@ -7,14 +7,14 @@ import { Header } from '@/shared/ui/Header'
 import { NavBar } from '@/shared/ui/NavBar'
 
 import { useMatrix } from '@/shared/api/use-matrix'
-import { getDaily } from '@/shared/api/get-daily'
+import { getPractice } from '@/shared/api/get-practice'
 
-export const Home = () => {
+export const Practice = () => {
   const [matrix, setMatrix] = useState<CrosswordleType>()
   const { correct, current } = useMatrix(matrix)
 
   useEffect(() => {
-    getDaily().then((data) => setMatrix(data))
+    getPractice().then((data) => setMatrix(data))
   }, [])
 
   return (
@@ -25,6 +25,7 @@ export const Home = () => {
         {!(current && correct) && (
           <p className="text-center text-lg">Загружаем...</p>
         )}
+
         {current &&
           correct &&
           current.map((line, i) => (

@@ -16,8 +16,11 @@ export const Cell = (props: CellProps) => {
   })
 
   return (
-    <div className={`w-12 h-12 text-center ${classes}`}>
+    <button
+      className={`w-12 h-12 flex justify-center items-center text-xl font-semibold ${classes}`}
+      disabled={status === 'empty'}
+    >
       {cell === '@' ? ' ' : cell}
-    </div>
+    </button>
   )
 }
