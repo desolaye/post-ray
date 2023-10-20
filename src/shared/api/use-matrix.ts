@@ -4,6 +4,10 @@ import { CrosswordleType } from '../model/crosswordle'
 export const useMatrix = (data?: CrosswordleType) => {
   const [current, setCurrent] = useState<string[][]>()
   const [correct, setCorrect] = useState<string[][]>()
+  const [selected, setSelected] = useState<{ i: number; j: number }>({
+    i: -1,
+    j: -1,
+  })
 
   useEffect(() => {
     if (data) {
@@ -33,5 +37,5 @@ export const useMatrix = (data?: CrosswordleType) => {
     }
   }, [data])
 
-  return { current, correct, setCurrent }
+  return { current, correct, setCurrent, selected, setSelected }
 }

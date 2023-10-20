@@ -20,6 +20,8 @@ export const getStatus = (
     if (correct[i][k] === currentSymbol) lineCount++
   }
 
+  if (lineCount > 0) return 'nearby'
+
   for (let k = j + 1; k < 7; k++) {
     if (correct[i][k] === '@') {
       lineCount = 0
@@ -30,7 +32,7 @@ export const getStatus = (
     if (correct[i][k] === currentSymbol) lineCount++
   }
 
-  if (lineCount > 1) return 'nearby'
+  if (lineCount > 0) return 'nearby'
 
   let columnCount = 0
 
@@ -43,6 +45,8 @@ export const getStatus = (
     if (current[k][j] === currentSymbol) columnCount--
     if (correct[k][j] === currentSymbol) columnCount++
   }
+
+  if (columnCount > 0) return 'nearby'
 
   for (let k = i + 1; k < 7; k++) {
     if (correct[k][j] === '@') {

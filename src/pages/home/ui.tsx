@@ -11,7 +11,25 @@ import { getDaily } from '@/shared/api/get-daily'
 
 export const Home = () => {
   const [matrix, setMatrix] = useState<CrosswordleType>()
-  const { correct, current } = useMatrix(matrix)
+  const { correct, current, selected, setSelected, setCurrent } =
+    useMatrix(matrix)
+
+  const handleSwap = (i: number, j: number) => {
+    if (i === selected.i && j === selected.j) {
+      setSelected({ i: -1, j: -1 })
+    } else if (selected.i >= 0 && selected.j >= 0) {
+      const crt = JSON.stringify(current)
+      const parsed = JSON.parse(crt)
+      const toSwap = parsed[i][j]
+      parsed[i][j] = parsed[selected.i][selected.j]
+      parsed[selected.i][selected.j] = toSwap
+
+      setCurrent(parsed)
+      setSelected({ i: -1, j: -1 })
+    } else {
+      setSelected({ i, j })
+    }
+  }
 
   useEffect(() => {
     getDaily().then((data) => setMatrix(data))
@@ -29,6 +47,8 @@ export const Home = () => {
           correct &&
           current.map((line, i) => (
             <Row
+              onSelect={handleSwap}
+              selected={selected}
               key={i}
               correct={correct}
               current={current}
