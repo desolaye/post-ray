@@ -14,10 +14,6 @@ export const Home = () => {
   const { correct, current, selected, setSelected, setCurrent } =
     useMatrix(matrix)
 
-  useEffect(() => {
-    console.log(selected)
-  }, [selected])
-
   const handleSwap = (i: number, j: number) => {
     if (i === selected.i && j === selected.j) {
       setSelected({ i: -1, j: -1 })
