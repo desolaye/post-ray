@@ -7,7 +7,8 @@ export const Header = () => {
         <div className="w-12 h-12">
           <img src="/logo.svg" className="w-full h-full" />
         </div>
-        <h1 className="text-xl">Post Ray</h1>
+        <h1 className="text-xl">Crosswordle</h1>
+        <h1>Post Ray</h1>
       </section>
     </header>
   )
