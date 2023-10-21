@@ -17,7 +17,7 @@ export const Row = (props: RowProps) => {
   const { correct, current, line, i, selected, onSelect } = props
 
   return (
-    <div className="flex">
+    <div className="flex gap-0.5">
       {line.map((cell, j) => (
         <Cell
           key={j}

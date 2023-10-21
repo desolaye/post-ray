@@ -39,7 +39,7 @@ export const Home = () => {
     <article className="flex flex-col gap-4">
       <Header />
       <NavBar />
-      <div className="bg-lime-100 w-fit mx-auto p-4 rounded shadow">
+      <div className="bg-lime-100 w-fit mx-auto p-4 rounded shadow flex flex-col gap-0.5">
         {!(current && correct) && (
           <p className="text-center text-lg">Загружаем...</p>
         )}
