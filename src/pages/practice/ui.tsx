@@ -12,8 +12,15 @@ import { getPractice } from '@/shared/api/get-practice'
 export const Practice = () => {
   const [matrix, setMatrix] = useState<CrosswordleType>()
 
-  const { correct, current, selected, setSelected, setCurrent } =
-    useMatrix(matrix)
+  const {
+    correct,
+    current,
+    selected,
+    shufflesLeft,
+    setShufflesLeft,
+    setSelected,
+    setCurrent,
+  } = useMatrix(matrix)
 
   const handleSwap = (i: number, j: number) => {
     if (i === selected.i && j === selected.j) {
@@ -22,9 +29,12 @@ export const Practice = () => {
       const crt = JSON.stringify(current)
       const parsed = JSON.parse(crt)
       const toSwap = parsed[i][j]
+
       parsed[i][j] = parsed[selected.i][selected.j]
       parsed[selected.i][selected.j] = toSwap
+
       setCurrent(parsed)
+      setShufflesLeft((prev) => prev - 1)
       setSelected({ i: -1, j: -1 })
     } else {
       setSelected({ i, j })
@@ -32,11 +42,14 @@ export const Practice = () => {
   }
 
   useEffect(() => {
-    getPractice().then((data) => setMatrix(data))
+    getPractice().then((data) => {
+      setMatrix(data)
+      setShufflesLeft(data?.shuffles || 19)
+    })
   }, [])
 
   return (
-    <article className="flex flex-col gap-4">
+    <article className="flex flex-col gap-4 bg-slate-100 min-h-screen">
       <Header />
       <NavBar />
       <div className="bg-lime-100 w-fit mx-auto p-4 rounded shadow flex flex-col gap-0.5">
@@ -58,7 +71,7 @@ export const Practice = () => {
             />
           ))}
       </div>
-      <p className="text-lg text-center">Осталось Х замен</p>
+      <p className="text-lg text-center">Осталось {shufflesLeft} замен</p>
     </article>
   )
 }

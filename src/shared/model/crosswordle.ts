@@ -14,7 +14,8 @@ const CrosswordleLine = z.object({
 
 export const CrosswordleZod = z.object({
   day: z.number(),
-  crossword: z.array(CrosswordleLine).min(7).max(7),
+  shuffles: z.number(),
+  crossword: z.array(CrosswordleLine).min(6).max(7),
 })
 
 export type CrosswordleCellType = z.infer<typeof CrosswordleCell>[]

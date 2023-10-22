@@ -25,7 +25,7 @@ export const NavBar = () => {
             'w-full text-center border rounded p-1 transition-all',
             {
               'bg-lime-100 shadow-inner': pathname === link.path,
-              'border-lime-300 shadow': pathname !== link.path,
+              'border-lime-300 shadow bg-white': pathname !== link.path,
             },
           )}
         >

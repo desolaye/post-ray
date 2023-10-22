@@ -4,6 +4,8 @@ import { CrosswordleType } from '../model/crosswordle'
 export const useMatrix = (data?: CrosswordleType) => {
   const [current, setCurrent] = useState<string[][]>()
   const [correct, setCorrect] = useState<string[][]>()
+  const [shufflesLeft, setShufflesLeft] = useState(1)
+  const [isDone, setIsDone] = useState<'playing' | 'win' | 'lose'>('playing')
   const [selected, setSelected] = useState<{ i: number; j: number }>({
     i: -1,
     j: -1,
@@ -37,5 +39,27 @@ export const useMatrix = (data?: CrosswordleType) => {
     }
   }, [data])
 
-  return { current, correct, setCurrent, selected, setSelected }
+  useEffect(() => {
+    if (current && correct) {
+      let done = true
+      for (let i = 0; i < current.length && done; i++) {
+        for (let j = 0; j < correct.length && done; j++) {
+          if (current[i][j] !== correct[i][j]) done = false
+        }
+      }
+      if (done) setIsDone('win')
+      else if (shufflesLeft < 1) setIsDone('lose')
+    }
+  }, [current, shufflesLeft, correct])
+
+  return {
+    current,
+    correct,
+    setCurrent,
+    selected,
+    setSelected,
+    shufflesLeft,
+    setShufflesLeft,
+    isDone,
+  }
 }
