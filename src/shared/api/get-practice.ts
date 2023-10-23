@@ -1,14 +1,18 @@
 import axios from 'axios'
 import { axiosInstance } from '../api/axios-instance'
-import { CrosswordleType, CrosswordleZod } from '../model/crosswordle'
+
+import {
+  BackendCrosswordleType,
+  BackendCrosswordleZod,
+} from '../types/backend-data'
 
 export const getPractice = async () => {
   try {
     const { data, status, statusText } =
-      await axiosInstance.get<CrosswordleType>('/practice')
+      await axiosInstance.get<BackendCrosswordleType>('/practice')
 
     if (status !== 200) throw new Error(statusText)
-    CrosswordleZod.parse(data)
+    BackendCrosswordleZod.parse(data)
 
     return data
   } catch (err) {
