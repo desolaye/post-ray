@@ -15,7 +15,7 @@ export const getClipboardValue = (current: Grid, shufflesLeft: number) => {
     data += '\n'
   }
 
-  data += `\nhttps://post-ray.vercel.com/\n`
+  data += `\nhttps://post-ray.vercel.app/\n`
 
   return data
 }
