@@ -56,6 +56,13 @@ export const Game = () => {
     }
   }, [shufflesLeft])
 
+  useEffect(() => {
+    if (current) {
+      const status = getGameStatus(current)
+      if (status) setGameStatus({ status: GAME_STATUS.WIN, isModalOpen: true })
+    }
+  }, [current])
+
   return (
     <article className="min-h-screen bg-gray-100 dark:bg-gray-500 dark:text-white flex flex-col gap-4">
       <Header />
