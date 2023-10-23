@@ -1,57 +1,86 @@
 import { useEffect, useState } from 'react'
 
-import { Grid as GridType, SelectedCell } from '@/shared/types/crosswordle'
 import { BackendCrosswordleType } from '@/shared/types/backend-data'
-
-import { convertToGrid } from '@/shared/lib/convert-to-grid'
-import { updateStatus } from '@/shared/lib/update-status'
-
 import { getDaily } from '@/shared/api/get-daily'
-import { Loader } from '@/shared/ui/loader'
+import { getGameStatus } from '@/shared/lib/get-game-status'
+import { getClipboardValue } from '@/shared/lib/get-clipboard-value'
+
+import { ModalLayout } from '@/shared/layouts/modal-layout'
+import { Header } from '@/shared/ui/header'
+import { GameEndCard } from '@/shared/ui/game-end-card'
+
+import {
+  GAME_STATUS,
+  GameStatus,
+  Grid as GridType,
+} from '@/shared/types/crosswordle'
 
 import { Grid } from '@/widgets/grid'
-import { swapCells } from '@/shared/lib/swap-cells'
 
 export const Game = () => {
   const [shufflesLeft, setShufflesLeft] = useState(19)
-  const [currentGrid, setCurrentGrid] = useState<GridType>()
-  const [correctGrid, setCorrectGrid] = useState<GridType>()
-  const [selectedCell, setSelectedCell] = useState<SelectedCell>()
+  const [crosswordle, setCrosswordle] = useState<BackendCrosswordleType>()
+  const [current, setCurrent] = useState<GridType>()
+  const [gameStatus, setGameStatus] = useState<GameStatus>({
+    isModalOpen: false,
+    status: GAME_STATUS.IN_GAME,
+  })
 
-  const handleRequest = (data: BackendCrosswordleType) => {
-    const { currentGrid, correctGrid } = convertToGrid(data)
-
-    setCorrectGrid(correctGrid)
-    setCurrentGrid(currentGrid)
-    setShufflesLeft(data.shuffles)
+  const handleShuffle = () => {
+    setShufflesLeft((prev) => prev - 1)
   }
 
-  const onClick = (i: number, j: number) => {
-    if (selectedCell && currentGrid) {
-      swapCells(currentGrid, selectedCell, { i, j })
-      setSelectedCell(undefined)
-      setShufflesLeft((prev) => prev - 1)
+  const handleShare = () => {
+    if (current) {
+      const data = getClipboardValue(current, shufflesLeft)
+      navigator.clipboard.writeText(data)
+      setGameStatus({ ...gameStatus, isModalOpen: false })
     }
-
-    if (!selectedCell) setSelectedCell({ i, j })
   }
 
   useEffect(() => {
     getDaily().then((data) => {
-      if (data) handleRequest(data)
+      if (data) {
+        setCrosswordle(data)
+        setShufflesLeft(data.shuffles)
+      }
     })
   }, [])
 
   useEffect(() => {
-    if (currentGrid && correctGrid) {
-      const copy = updateStatus(currentGrid, correctGrid, selectedCell)
-      setCurrentGrid(copy)
+    if (current) {
+      const status = getGameStatus(current)
+      if (status) setGameStatus({ status: GAME_STATUS.WIN, isModalOpen: true })
+      if (!status && shufflesLeft < 1)
+        setGameStatus({ status: GAME_STATUS.LOSE, isModalOpen: true })
     }
-  }, [shufflesLeft, selectedCell])
+  }, [shufflesLeft])
 
   return (
-    <article>
-      {currentGrid ? <Grid data={currentGrid} onClick={onClick} /> : <Loader />}
+    <article className="min-h-screen bg-gray-100 dark:bg-gray-500 dark:text-white flex flex-col gap-4">
+      <Header />
+
+      {crosswordle && (
+        <>
+          <Grid
+            shufflesLeft={shufflesLeft}
+            crosswordle={crosswordle}
+            onShuffle={handleShuffle}
+            onCurrentChange={setCurrent}
+          />
+          <p className="text-xl text-center">Осталось замен: {shufflesLeft}</p>
+        </>
+      )}
+
+      {gameStatus.isModalOpen && (
+        <ModalLayout>
+          <GameEndCard
+            shufflesLeft={shufflesLeft}
+            status={gameStatus.status}
+            onShare={handleShare}
+          />
+        </ModalLayout>
+      )}
     </article>
   )
 }
