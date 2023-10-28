@@ -1,9 +1,14 @@
-import { CELL_STATUS, Grid } from '../types/crosswordle'
+import { CELL_STATUS, GridType } from '../types/crosswordle'
 
-export const getClipboardValue = (current: Grid, shufflesLeft: number) => {
+export const getClipboardValue = (
+  current: GridType,
+  shufflesLeft: number,
+  day: number,
+) => {
+  const icon = shufflesLeft > 0 ? '✅' : '❌'
   let data = '=== Crosswordle ===\n'
 
-  data += `#day RU - (${shufflesLeft}⭐)\n`
+  data += `#day${day} RU - ${icon} (${shufflesLeft}⭐)\n`
 
   for (let i = 0; i < current.length; i++) {
     for (let j = 0; j < current[i].length; j++) {

@@ -24,7 +24,3 @@ export type SelectedCell = {
 
 export type LineType = CellType[]
 export type GridType = LineType[]
-
-export type GameStatus = {
-  status: GAME_STATUS
-}

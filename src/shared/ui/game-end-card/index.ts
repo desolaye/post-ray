@@ -1,1 +1,0 @@
-export { GameEndCard } from './ui'

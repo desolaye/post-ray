@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { GridType, SelectedCell } from '../types/crosswordle'
+import { GAME_STATUS, GridType, SelectedCell } from '../types/crosswordle'
 import { BackendDataType } from '../types/backend-data'
 import { convertToGrid } from './convert-to-grid'
 import { updateGridStatus } from './update-grid-status'
 import { swapCells } from './swap-cells'
+import { getGameStatus } from './get-game-status'
 
 export const useCrosswordle = () => {
   const [backendData, setBackendData] = useState<BackendDataType>()
@@ -13,6 +14,8 @@ export const useCrosswordle = () => {
 
   const [shufflesLeft, setShuffletsLeft] = useState(1)
   const [currentDay, setCurrentDay] = useState(0)
+  const [gameStatus, setGameStatus] = useState<GAME_STATUS>(0)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const handleCellSelect = (i: number, j: number) => {
     if (selectedCell && selectedCell.i === i && selectedCell.j === j) {
@@ -33,10 +36,9 @@ export const useCrosswordle = () => {
       const copy = updateGridStatus(currentGrid, correctGrid, selectedCell)
 
       setCorrectGrid(correctGrid)
-      setCurrentGrid(currentGrid)
+      setCurrentGrid(copy)
       setShuffletsLeft(shuffles)
       setCurrentDay(day)
-      setCurrentGrid(copy)
     } else {
       setCorrectGrid(undefined)
       setCurrentGrid(undefined)
@@ -50,13 +52,32 @@ export const useCrosswordle = () => {
     }
   }, [selectedCell])
 
+  useEffect(() => {
+    if (currentGrid) {
+      const status = getGameStatus(currentGrid)
+
+      if (status) {
+        setGameStatus(GAME_STATUS.WIN)
+        setIsModalOpen(true)
+      }
+
+      if (!status && shufflesLeft < 1) {
+        setGameStatus(GAME_STATUS.LOSE)
+        setIsModalOpen(true)
+      }
+    }
+  }, [currentGrid])
+
   return {
     currentGrid,
     correctGrid,
+    currentDay,
     selectedCell,
     shufflesLeft,
-    currentDay,
+    gameStatus,
+    isModalOpen,
     handleCellSelect,
     setBackendData,
+    setIsModalOpen,
   }
 }
