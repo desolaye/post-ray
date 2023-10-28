@@ -65,6 +65,7 @@ export const useCrosswordle = () => {
       const { currentGrid, correctGrid } = convertToGrid(crossword)
       const copy = updateGridStatus(currentGrid, correctGrid, selectedCell)
 
+      setGameStatus(GAME_STATUS.IN_GAME)
       setCorrectGrid(correctGrid)
       setCurrentGrid(copy)
       setShuffletsLeft(shuffles)

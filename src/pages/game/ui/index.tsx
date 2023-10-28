@@ -47,8 +47,8 @@ export const Game = (props: GameProps) => {
 
     if (isPractice) {
       getPractice().then((data) => {
-        setBackendData(data)
         setIsPractice(true)
+        setBackendData(data)
       })
     } else {
       getDaily().then((data) => {
