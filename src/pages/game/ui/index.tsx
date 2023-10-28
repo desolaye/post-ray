@@ -1,44 +1,95 @@
 import { useEffect } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 import { getDaily } from '@/shared/api/get-daily'
+import { getPractice } from '@/shared/api/get-practice'
+import { GAME_STATUS, SavedCrosswordle } from '@/shared/types/crosswordle'
+import { getClipboardValue } from '@/shared/lib/get-clipboard-value'
 import { useCrosswordle } from '@/shared/lib/use-crosswordle'
+import { ModalLayout } from '@/shared/layouts/modal-layout'
 import { Header } from '@/shared/ui/header'
 
-import { Main } from './main'
-import { GAME_STATUS } from '@/shared/types/crosswordle'
 import { Results } from './results'
-import { ModalLayout } from '@/shared/layouts/modal-layout'
-import { getClipboardValue } from '@/shared/lib/get-clipboard-value'
+import { Main } from './main'
 
-export const Game = () => {
+interface GameProps {
+  isPractice?: boolean
+}
+
+export const Game = (props: GameProps) => {
+  const { isPractice } = props
+  const { pathname } = useLocation()
+
   const {
     currentGrid,
     correctGrid,
     gameStatus,
-    currentDay,
     shufflesLeft,
+    isModalOpen,
+    selectedCell,
     handleCellSelect,
     setBackendData,
-    isModalOpen,
     setIsModalOpen,
+    handleSavedData,
+    setIsPractice,
+    saveLocalData,
   } = useCrosswordle()
 
   const handleCopy = () => {
     setIsModalOpen(false)
-
-    if (currentGrid) {
-      const clipboard = getClipboardValue(currentGrid, shufflesLeft, currentDay)
-      navigator.clipboard.writeText(clipboard)
-    }
+    const clipboard = getClipboardValue()
+    navigator.clipboard.writeText(clipboard)
   }
 
   useEffect(() => {
-    getDaily().then((data) => setBackendData(data))
-  }, [])
+    setBackendData(undefined)
+
+    if (isPractice) {
+      getPractice().then((data) => {
+        setBackendData(data)
+        setIsPractice(true)
+      })
+    } else {
+      getDaily().then((data) => {
+        setBackendData(data)
+
+        const localData = localStorage.getItem('ru-crossword')
+        if (localData) handleSavedData(JSON.parse(localData))
+      })
+    }
+  }, [pathname])
+
+  useEffect(() => {
+    const localData = localStorage.getItem('ru-crossword')
+
+    if (currentGrid && localData && !selectedCell) {
+      const local: SavedCrosswordle = JSON.parse(localData)
+
+      if (local.shufflesLeft < shufflesLeft) {
+        if (!isPractice) handleSavedData(local)
+      } else {
+        if (!isPractice) saveLocalData(local.streak, gameStatus)
+      }
+    }
+  }, [currentGrid, gameStatus])
 
   return (
     <article className="flex flex-col gap-4 p-2 max-w-xl mx-auto">
       <Header />
+      <nav className="flex gap-8 justify-between">
+        <Link
+          to="/daily"
+          className="w-full shadow-z-light border border-z-light rounded-md p-2 text-center"
+        >
+          Daily
+        </Link>
+        <Link
+          to="/practice"
+          className="w-full shadow-z-light border border-z-light rounded-md p-2 text-center"
+        >
+          Practice
+        </Link>
+      </nav>
 
       {currentGrid && (
         <Main

@@ -24,3 +24,11 @@ export type SelectedCell = {
 
 export type LineType = CellType[]
 export type GridType = LineType[]
+
+export type SavedCrosswordle = {
+  crossword: GridType
+  day: number
+  shufflesLeft: number
+  gameStatus: GAME_STATUS
+  streak: number
+}

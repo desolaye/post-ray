@@ -1,6 +1,11 @@
-import { GAME_STATUS, GridType } from '@/shared/types/crosswordle'
+import {
+  GAME_STATUS,
+  GridType,
+  SavedCrosswordle,
+} from '@/shared/types/crosswordle'
 import Card from '@/shared/ui/card'
 import StarIcon from '@/shared/assets/star-icon.svg?react'
+import FlameIcon from '@/shared/assets/flame-icon.svg?react'
 
 import { Crossword } from '@/widgets/crossword'
 
@@ -13,6 +18,9 @@ interface ResultsProps {
 
 export const Results = (props: ResultsProps) => {
   const { correctGrid, shufflesLeft, gameStatus, onCopy } = props
+  const local: SavedCrosswordle = JSON.parse(
+    localStorage.getItem('ru-crossword')!,
+  )
 
   return (
     <>
@@ -20,10 +28,18 @@ export const Results = (props: ResultsProps) => {
         <p className="text-center text-xl">
           {gameStatus === GAME_STATUS.WIN ? 'Победа!' : 'Поражение...'}
         </p>
-        <div className="flex justify-center items-center text-yellow-500">
-          <p className="text-xl">{shufflesLeft}</p>
-          <div className="w-10 h-10">
-            <StarIcon />
+        <div className="flex gap-8 justify-evenly">
+          <div className="flex justify-center items-center text-yellow-500">
+            <p className="text-xl">{local.streak}</p>
+            <div className="w-10 h-10">
+              <FlameIcon />
+            </div>
+          </div>
+          <div className="flex justify-center items-center text-yellow-500">
+            <p className="text-xl">{shufflesLeft}</p>
+            <div className="w-10 h-10">
+              <StarIcon />
+            </div>
           </div>
         </div>
         <p className="text-center">Правильный кроссворд:</p>

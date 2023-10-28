@@ -1,21 +1,21 @@
-import { CELL_STATUS, GridType } from '../types/crosswordle'
+import { CELL_STATUS, SavedCrosswordle } from '../types/crosswordle'
 
-export const getClipboardValue = (
-  current: GridType,
-  shufflesLeft: number,
-  day: number,
-) => {
-  const icon = shufflesLeft > 0 ? '✅' : '❌'
+export const getClipboardValue = () => {
+  const localData = localStorage.getItem('ru-crossword')!
+  const crossword: SavedCrosswordle = JSON.parse(localData)
+
+  const icon = crossword.shufflesLeft > 0 ? '✅' : '❌'
   let data = '=== Crosswordle ===\n'
 
-  data += `#day${day} RU - ${icon} (${shufflesLeft}⭐)\n`
+  data += `#day${crossword.day} RU - ${icon} (${crossword.shufflesLeft}⭐)\n`
+  data += `Streak: ${crossword.streak}🔥\n`
 
-  for (let i = 0; i < current.length; i++) {
-    for (let j = 0; j < current[i].length; j++) {
-      if (current[i][j].status === CELL_STATUS.CORRECT) data += '🟩'
-      if (current[i][j].status === CELL_STATUS.NEARBY) data += '🟨'
-      if (current[i][j].status === CELL_STATUS.WRONG) data += '🟥'
-      if (current[i][j].status === CELL_STATUS.EMPTY) data += '⬛️'
+  for (let i = 0; i < crossword.crossword.length; i++) {
+    for (let j = 0; j < crossword.crossword[i].length; j++) {
+      if (crossword.crossword[i][j].status === CELL_STATUS.CORRECT) data += '🟩'
+      if (crossword.crossword[i][j].status === CELL_STATUS.NEARBY) data += '🟨'
+      if (crossword.crossword[i][j].status === CELL_STATUS.WRONG) data += '🟥'
+      if (crossword.crossword[i][j].status === CELL_STATUS.EMPTY) data += '⬛️'
     }
     data += '\n'
   }

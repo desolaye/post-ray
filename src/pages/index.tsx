@@ -7,7 +7,7 @@ export const Routing = () => {
   return (
     <Routes>
       <Route path="/daily" element={<Game />} />
-      <Route path="/practice" element={<Game />} />
+      <Route path="/practice" element={<Game isPractice />} />
       <Route path="*" element={<Navigate to="/daily" />} />
     </Routes>
   )
