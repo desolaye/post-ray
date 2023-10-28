@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { getDaily } from '@/shared/api/get-daily'
 import { getPractice } from '@/shared/api/get-practice'
@@ -11,6 +11,7 @@ import { Header } from '@/shared/ui/header'
 
 import { Results } from './results'
 import { Main } from './main'
+import { Nav } from '@/shared/ui/nav'
 
 interface GameProps {
   isPractice?: boolean
@@ -76,20 +77,7 @@ export const Game = (props: GameProps) => {
   return (
     <article className="flex flex-col gap-4 p-2 max-w-xl mx-auto">
       <Header />
-      <nav className="flex gap-8 justify-between">
-        <Link
-          to="/daily"
-          className="w-full shadow-z-light border border-z-light rounded-md p-2 text-center"
-        >
-          Daily
-        </Link>
-        <Link
-          to="/practice"
-          className="w-full shadow-z-light border border-z-light rounded-md p-2 text-center"
-        >
-          Practice
-        </Link>
-      </nav>
+      <Nav />
 
       {currentGrid && (
         <Main
