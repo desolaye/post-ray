@@ -92,6 +92,7 @@ export const Game = (props: GameProps) => {
           onCopy={handleCopy}
           correctGrid={correctGrid}
           gameStatus={gameStatus}
+          showGrid
           shufflesLeft={shufflesLeft}
         />
       )}

@@ -12,12 +12,13 @@ import { Crossword } from '@/widgets/crossword'
 interface ResultsProps {
   correctGrid: GridType
   shufflesLeft: number
+  showGrid?: boolean
   gameStatus: GAME_STATUS
   onCopy?: () => void
 }
 
 export const Results = (props: ResultsProps) => {
-  const { correctGrid, shufflesLeft, gameStatus, onCopy } = props
+  const { correctGrid, shufflesLeft, gameStatus, showGrid, onCopy } = props
   const local: SavedCrosswordle = JSON.parse(
     localStorage.getItem('ru-crossword')!,
   )
@@ -43,7 +44,9 @@ export const Results = (props: ResultsProps) => {
           </div>
         </div>
         <p className="text-center">Правильный кроссворд:</p>
-        <Crossword current={correctGrid} shufflesLeft={shufflesLeft} />
+        {showGrid && (
+          <Crossword current={correctGrid} shufflesLeft={shufflesLeft} />
+        )}
         <button
           className="border border-z-light shadow-z-light rounded-md p-2 bg-green-500 text-white"
           onClick={onCopy}
