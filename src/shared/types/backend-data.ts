@@ -12,12 +12,15 @@ const BackendLineZod = z.object({
   6: z.array(BackendCellZod).min(2).max(2).optional(),
 })
 
-export const BackendCrosswordleZod = z.object({
+const BackendCrosswordZod = z.array(BackendLineZod).min(6).max(7)
+
+export const BackendDataZod = z.object({
   day: z.number(),
   shuffles: z.number(),
-  crossword: z.array(BackendLineZod).min(6).max(7),
+  crossword: BackendCrosswordZod,
 })
 
 export type BackendCellType = z.infer<typeof BackendCellZod>[]
 export type BackendLineType = z.infer<typeof BackendLineZod>
-export type BackendCrosswordleType = z.infer<typeof BackendCrosswordleZod>
+export type BackendCrosswordType = z.infer<typeof BackendCrosswordZod>
+export type BackendDataType = z.infer<typeof BackendDataZod>

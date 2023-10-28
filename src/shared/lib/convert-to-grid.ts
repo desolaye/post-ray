@@ -1,8 +1,8 @@
-import { BackendCrosswordleType } from '../types/backend-data'
-import { CELL_STATUS, Grid } from '../types/crosswordle'
+import { BackendCrosswordType } from '../types/backend-data'
+import { CELL_STATUS, GridType } from '../types/crosswordle'
 
-export const convertToGrid = ({ crossword }: BackendCrosswordleType) => {
-  const currentGrid: Grid = crossword.map((line) => [
+export const convertToGrid = (crossword: BackendCrosswordType) => {
+  const currentGrid: GridType = crossword.map((line) => [
     line[0]
       ? { status: CELL_STATUS.WRONG, letter: line[0][1] }
       : { status: CELL_STATUS.EMPTY, letter: '' },
@@ -26,7 +26,7 @@ export const convertToGrid = ({ crossword }: BackendCrosswordleType) => {
       : { status: CELL_STATUS.EMPTY, letter: '' },
   ])
 
-  const correctGrid: Grid = crossword.map((line) => [
+  const correctGrid: GridType = crossword.map((line) => [
     line[0]
       ? { status: CELL_STATUS.CORRECT, letter: line[0][0] }
       : { status: CELL_STATUS.EMPTY, letter: '' },

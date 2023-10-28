@@ -1,7 +1,7 @@
-import { Grid, SelectedCell } from '../types/crosswordle'
+import { GridType, SelectedCell } from '../types/crosswordle'
 
 export const swapCells = (
-  current: Grid,
+  current: GridType,
   toSwap: SelectedCell,
   fromSwap: SelectedCell,
 ) => {

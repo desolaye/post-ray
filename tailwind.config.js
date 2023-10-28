@@ -6,6 +6,12 @@ export default {
       fontFamily: {
         sans: ['raleway', 'sans-serif'],
       },
+      boxShadow: {
+        'z-light': '0 0 .625rem -.1875rem #00000021',
+      },
+      borderColor: {
+        'z-light': '1px solid #e9e9f2',
+      },
     },
   },
   plugins: [],

@@ -1,10 +1,10 @@
-import { CELL_STATUS, Cell as CellType } from '@/shared/types/crosswordle'
+import { CELL_STATUS, CellType } from '@/shared/types/crosswordle'
 import classNames from 'classnames'
 
 interface CellProps {
   data: CellType
   disabled: boolean
-  onCellSelect: () => void
+  onCellSelect?: () => void
 }
 
 export const Cell = (props: CellProps) => {

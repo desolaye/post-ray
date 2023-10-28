@@ -1,9 +1,9 @@
 import { CELL_STATUS, Grid } from '../types/crosswordle'
 
 export const getClipboardValue = (current: Grid, shufflesLeft: number) => {
-  let data = 'Crosswordle RU\n'
-  data += new Array(shufflesLeft).fill(0).reduce((prev) => prev + '⭐', '\n')
-  data += shufflesLeft ? '\n\n' : ''
+  let data = '=== Crosswordle ===\n'
+
+  data += `#day RU - (${shufflesLeft}⭐)\n`
 
   for (let i = 0; i < current.length; i++) {
     for (let j = 0; j < current[i].length; j++) {

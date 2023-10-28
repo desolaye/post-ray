@@ -1,6 +1,6 @@
-import { CELL_STATUS, Grid } from '../types/crosswordle'
+import { CELL_STATUS, GridType } from '../types/crosswordle'
 
-export const getGameStatus = (current: Grid) => {
+export const getGameStatus = (current: GridType) => {
   let done = true
 
   for (let i = 0; i < current.length && done; i++) {

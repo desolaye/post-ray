@@ -1,9 +1,14 @@
-import { CELL_STATUS, Cell, Grid, SelectedCell } from '../types/crosswordle'
+import {
+  CELL_STATUS,
+  CellType,
+  GridType,
+  SelectedCell,
+} from '../types/crosswordle'
 
 const updateCell = (
-  correct: Grid,
-  current: Grid,
-  cell: Cell,
+  correct: GridType,
+  current: GridType,
+  cell: CellType,
   i: number,
   j: number,
 ) => {
@@ -51,13 +56,12 @@ const updateCell = (
   return CELL_STATUS.WRONG
 }
 
-export const updateStatus = (
-  current: Grid,
-  correct: Grid,
+export const updateGridStatus = (
+  current: GridType,
+  correct: GridType,
   selectedCell?: SelectedCell,
 ) => {
-  const currentJSON = JSON.stringify(current)
-  const copy: Grid = JSON.parse(currentJSON)
+  const copy: GridType = current.map((line) => [...line])
 
   for (let i = 0; i < copy.length; i++) {
     for (let j = 0; j < copy.length; j++) {

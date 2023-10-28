@@ -12,7 +12,7 @@ export enum GAME_STATUS {
   LOSE,
 }
 
-export type Cell = {
+export type CellType = {
   letter: string
   status: CELL_STATUS
 }
@@ -22,10 +22,9 @@ export type SelectedCell = {
   j: number
 }
 
-export type Line = Cell[]
-export type Grid = Line[]
+export type LineType = CellType[]
+export type GridType = LineType[]
 
 export type GameStatus = {
-  isModalOpen: boolean
   status: GAME_STATUS
 }

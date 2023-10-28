@@ -1,18 +1,15 @@
 import axios from 'axios'
 import { axiosInstance } from '../api/axios-instance'
 
-import {
-  BackendCrosswordleType,
-  BackendCrosswordleZod,
-} from '../types/backend-data'
+import { BackendDataType, BackendDataZod } from '../types/backend-data'
 
 export const getDaily = async () => {
   try {
     const { data, status, statusText } =
-      await axiosInstance.get<BackendCrosswordleType>('/daily')
+      await axiosInstance.get<BackendDataType>('/daily')
 
     if (status !== 200) throw new Error(statusText)
-    BackendCrosswordleZod.parse(data)
+    BackendDataZod.parse(data)
 
     return data
   } catch (err) {

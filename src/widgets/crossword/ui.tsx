@@ -1,18 +1,18 @@
-import {
-  CELL_STATUS,
-  Cell as CellType,
-  Grid as GridType,
-} from '@/shared/types/crosswordle'
+import { CELL_STATUS, CellType, GridType } from '@/shared/types/crosswordle'
 import { Cell } from '@/entities/cell'
 
 interface GridProps {
   current: GridType
   shufflesLeft: number
-  onCellSelect: (i: number, j: number) => void
+  onCellSelect?: (i: number, j: number) => void
 }
 
-export const GridUi = (props: GridProps) => {
+export const Crossword = (props: GridProps) => {
   const { current, shufflesLeft, onCellSelect } = props
+
+  const handleCellSelect = (i: number, j: number) => {
+    if (onCellSelect) onCellSelect(i, j)
+  }
 
   const isDisabled = (cell: CellType) =>
     cell.status === CELL_STATUS.CORRECT ||
@@ -20,7 +20,7 @@ export const GridUi = (props: GridProps) => {
     shufflesLeft < 1
 
   return (
-    <section className="flex flex-col gap-1 bg-lime-100 dark:bg-gray-700 w-fit mx-auto p-2 shadow rounded">
+    <section className="flex flex-col gap-1">
       {current.map((line, i) => (
         <div key={i} className="flex gap-1">
           {line.map((cell, j) => (
@@ -28,7 +28,7 @@ export const GridUi = (props: GridProps) => {
               key={j}
               data={cell}
               disabled={isDisabled(cell)}
-              onCellSelect={() => onCellSelect(i, j)}
+              onCellSelect={() => handleCellSelect(i, j)}
             />
           ))}
         </div>
